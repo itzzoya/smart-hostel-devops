@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: smart-hostel-system
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: smart-hostel-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: smart-hostel-db
+    databaseName: smart-hostel
+    user: admin

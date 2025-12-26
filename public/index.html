@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hostel - Complaint & Resource Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-home"></i>
+                <span>Smart Hostel</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <a href="#" onclick="showPage('login')" id="loginLink">Login</a>
+                <a href="#" onclick="showPage('register')" id="registerLink">Register</a>
+                <a href="#" onclick="logout()" id="logoutLink" style="display: none;">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Smart Hostel Management System</h1>
+                    <p class="hero-subtitle">Digitalize your hostel operations with seamless complaint handling and resource booking</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="showPage('login')">Get Started</button>
+                        <button class="btn btn-secondary" onclick="showPage('register')">Register Now</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-building"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <h3>Complaint Management</h3>
+                        <p>Submit and track complaints with real-time status updates</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Resource Booking</h3>
+                        <p>Book shared resources like washing machines and study rooms</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Role-Based Access</h3>
+                        <p>Separate dashboards for Students, Staff, and Wardens</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Analytics Dashboard</h3>
+                        <p>Monitor complaints and bookings with detailed analytics</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about">
+            <div class="container">
+                <h2 class="section-title">About The System</h2>
+                <div class="about-content">
+                    <p>Our Smart Hostel Complaint & Resource Management System digitizes hostel operations, eliminating manual processes and improving transparency. Students can easily raise complaints, track their status, and book shared resources, while wardens and staff can efficiently manage and resolve issues.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Login</h2>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="showPage('register')">Register</a></p>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Register</h2>
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="registerPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user-tag"></i> Role</label>
+                        <select id="registerRole" required onchange="toggleRoleFields()">
+                            <option value="">Select Role</option>
+                            <option value="student">Student</option>
+                            <option value="staff">Staff</option>
+                            <option value="warden">Warden</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="hostelBlockGroup" style="display: none;">
+                        <label><i class="fas fa-building"></i> Hostel Block</label>
+                        <input type="text" id="registerHostelBlock">
+                    </div>
+                    <div class="form-group" id="roomNumberGroup" style="display: none;">
+                        <label><i class="fas fa-door-open"></i> Room Number</label>
+                        <input type="text" id="registerRoomNumber">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="showPage('login')">Login</a></p>
+                <div id="registerError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="studentDashboard" class="page dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-user-graduate"></i> Student Dashboard</h2>
+                <div class="user-info">
+                    <span id="studentName"></span>
+                    <button class="btn btn-sm" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="showStudentTab('complaints')">My Complaints</button>
+                <button class="tab-btn" onclick="showStudentTab('submit')">Submit Complaint</button>
+                <button class="tab-btn" onclick="showStudentTab('bookings')">Resource Booking</button>
+            </div>
+
+            <!-- Complaints Tab -->
+            <div id="studentComplaintsTab" class="tab-content active">
+                <h3>My Complaints</h3>
+                <div id="studentComplaintsList" class="complaints-list"></div>
+            </div>
+
+            <!-- Submit Complaint Tab -->
+            <div id="studentSubmitTab" class="tab-content">
+                <h3>Submit New Complaint</h3>
+                <form id="complaintForm" onsubmit="submitComplaint(event)" class="complaint-form">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="complaintTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="complaintCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="water">Water Issue</option>
+                            <option value="wifi">WiFi Problem</option>
+                            <option value="electricity">Electricity</option>
+                            <option value="cleanliness">Cleanliness</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="complaintPriority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="complaintDescription" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Complaint</button>
+                </form>
+            </div>
+
+            <!-- Bookings Tab -->
+            <div id="studentBookingsTab" class="tab-content">
+                <h3><i class="fas fa-calendar-check"></i> Resource Booking</h3>
+                <p style="margin-bottom: 20px; color: var(--gray-color);">Browse available resources and book them for your use.</p>
+                <div id="resourcesList" class="resources-grid"></div>
+                <div id="bookingsList" class="bookings-list" style="margin-top: 40px;">
+                    <h4><i class="fas fa-list"></i> My Bookings</h4>
+                    <div id="myBookings"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staff Dashboard -->
+    <div id="staffDashboard" class="page dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-user-tie"></i> Staff Dashboard</h2>
+                <div class="user-info">
+                    <span id="staffName"></span>
+                    <button class="btn btn-sm" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <h3>Assigned Complaints</h3>
+            <div id="staffComplaintsList" class="complaints-list"></div>
+        </div>
+    </div>
+
+    <!-- Warden Dashboard -->
+    <div id="wardenDashboard" class="page dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-user-shield"></i> Warden Dashboard</h2>
+                <div class="user-info">
+                    <span id="wardenName"></span>
+                    <button class="btn btn-sm" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="showWardenTab('complaints')">All Complaints</button>
+                <button class="tab-btn" onclick="showWardenTab('resources')">Resources</button>
+                <button class="tab-btn" onclick="showWardenTab('stats')">Statistics</button>
+            </div>
+
+            <!-- Complaints Tab -->
+            <div id="wardenComplaintsTab" class="tab-content active">
+                <h3>All Complaints</h3>
+                <div id="wardenComplaintsList" class="complaints-list"></div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div id="wardenResourcesTab" class="tab-content">
+                <h3>Manage Resources</h3>
+                <button class="btn btn-primary" onclick="showAddResourceModal()">Add New Resource</button>
+                <div id="wardenResourcesList" class="resources-grid"></div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div id="wardenStatsTab" class="tab-content">
+                <h3>Statistics</h3>
+                <div id="statsContent" class="stats-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Resource Modal -->
+    <div id="addResourceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddResourceModal()">&times;</span>
+            <h3>Add New Resource</h3>
+            <form id="resourceForm" onsubmit="addResource(event)">
+                <div class="form-group">
+                    <label>Resource Name</label>
+                    <input type="text" id="resourceName" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="resourceDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="resourceCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="washing-machine">Washing Machine</option>
+                        <option value="study-room">Study Room</option>
+                        <option value="gym">Gym</option>
+                        <option value="common-room">Common Room</option>
+                        <option value="kitchen">Kitchen</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="resourceLocation" required>
+                </div>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" id="resourceCapacity" value="1" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Resource</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h3>Book Resource</h3>
+            <form id="bookingForm" onsubmit="createBooking(event)">
+                <input type="hidden" id="bookingResourceId">
+                <div class="form-group">
+                    <label>Resource</label>
+                    <input type="text" id="bookingResourceName" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Booking Date</label>
+                    <input type="date" id="bookingDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="time" id="bookingStartTime" required>
+                </div>
+                <div class="form-group">
+                    <label>End Time</label>
+                    <input type="time" id="bookingEndTime" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Staff Modal -->
+    <div id="assignStaffModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAssignStaffModal()">&times;</span>
+            <h3>Assign Staff</h3>
+            <form id="assignStaffForm" onsubmit="confirmAssignStaff(event)">
+                <input type="hidden" id="assignComplaintId">
+                <div class="form-group">
+                    <label>Select Staff Member</label>
+                    <select id="assignStaffSelect" required>
+                        <option value="">Loading staff...</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Assign</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
