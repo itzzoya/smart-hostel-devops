@@ -10,7 +10,7 @@ A comprehensive web-based solution for managing hostel complaints and resource b
 - ✅ Book shared resources (washing machines, study rooms, etc.)
 - ✅ View booking history
 
-### For Staff
+### For Worker-Staff
 - ✅ View assigned complaints
 - ✅ Update complaint status (In Progress, Resolved, Closed)
 - ✅ Add resolution notes
