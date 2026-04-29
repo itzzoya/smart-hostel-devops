@@ -8,9 +8,16 @@ pipeline {
             }
         }
 
+        stage('Stop Old Container') {
+            steps {
+                sh 'docker stop smart-hostel || true'
+                sh 'docker rm smart-hostel || true'
+            }
+        }
+
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 smart-hostel-app'
+                sh 'docker run -d --name smart-hostel -p 3000:3000 smart-hostel-app'
             }
         }
     }
