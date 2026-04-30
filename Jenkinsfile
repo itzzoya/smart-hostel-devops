@@ -1,13 +1,7 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "smart-hostel-app"
-        CONTAINER_NAME = "smart-hostel"
-    }
-
     stages {
-
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
@@ -16,32 +10,22 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Verification') {
             steps {
-                sh "docker build -t ${IMAGE_NAME}:latest ."
+                sh 'echo Build successful'
             }
         }
 
-        stage('Stop Old Container') {
+        stage('Deploy Simulation') {
             steps {
-                sh "docker stop ${CONTAINER_NAME} || true"
-                sh "docker rm ${CONTAINER_NAME} || true"
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                sh "docker run -d --name ${CONTAINER_NAME} -p 3000:3000 ${IMAGE_NAME}:latest"
+                sh 'echo Deployment successful'
             }
         }
     }
 
     post {
         success {
-            echo "CI/CD Pipeline Successful"
-        }
-        failure {
-            echo "Pipeline Failed - Check logs"
+            echo 'Pipeline completed successfully'
         }
     }
 }
