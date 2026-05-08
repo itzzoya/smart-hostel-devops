@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/usr/bin"
-    }
-
     stages {
 
         stage('Checkout') {
@@ -13,19 +9,10 @@ pipeline {
             }
         }
 
-        stage('Verify Docker') {
-            steps {
-                sh '''
-                which docker
-                docker --version
-                '''
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh '''
-                docker build -t smart-hostel-app .
+                /usr/bin/docker build -t smart-hostel-app .
                 '''
             }
         }
@@ -33,8 +20,8 @@ pipeline {
         stage('Stop Old Container') {
             steps {
                 sh '''
-                docker stop smart-hostel || true
-                docker rm smart-hostel || true
+                /usr/bin/docker stop smart-hostel || true
+                /usr/bin/docker rm smart-hostel || true
                 '''
             }
         }
@@ -42,7 +29,7 @@ pipeline {
         stage('Run New Container') {
             steps {
                 sh '''
-                docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app
+                /usr/bin/docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app
                 '''
             }
         }
@@ -53,7 +40,7 @@ pipeline {
             echo "Deployment SUCCESS - Website Updated"
         }
         failure {
-            echo "Deployment FAILED - Check logs"
+            echo "Deployment FAILED"
         }
     }
 }
