@@ -1,11 +1,24 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/usr/bin"
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/itzzoya/smart-hostel-devops.git'
+            }
+        }
+
+        stage('Verify Docker') {
+            steps {
+                sh '''
+                which docker
+                docker --version
+                '''
             }
         }
 
@@ -33,7 +46,6 @@ pipeline {
                 '''
             }
         }
-
     }
 
     post {
