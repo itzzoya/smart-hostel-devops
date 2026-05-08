@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin"
-    }
-
     stages {
 
         stage('Checkout') {
@@ -13,30 +9,45 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 sh '''
+                export PATH=$PATH:/usr/bin
+
                 docker version
                 docker build -t smart-hostel-app .
                 '''
             }
         }
 
-        stage('Stop') {
+        stage('Stop Old Container') {
             steps {
                 sh '''
+                export PATH=$PATH:/usr/bin
+
                 docker stop smart-hostel || true
                 docker rm smart-hostel || true
                 '''
             }
         }
 
-        stage('Run') {
+        stage('Run New Container') {
             steps {
                 sh '''
+                export PATH=$PATH:/usr/bin
+
                 docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployment SUCCESS - Website Updated"
+        }
+        failure {
+            echo "Deployment FAILED"
         }
     }
 }
