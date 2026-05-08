@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
+
+        stage('Checkout') {
             steps {
                 git branch: 'main',
                     credentialsId: 'github-creds',
@@ -10,22 +11,32 @@ pipeline {
             }
         }
 
-        stage('Build Verification') {
+        stage('Build Docker Image') {
             steps {
-                sh 'echo Build successful'
+                sh '/usr/bin/docker build -t smart-hostel-app .'
             }
         }
 
-        stage('Deploy Simulation') {
+        stage('Stop Old Container') {
             steps {
-                sh 'echo Deployment successful'
+                sh '/usr/bin/docker stop smart-hostel || true'
+                sh '/usr/bin/docker rm smart-hostel || true'
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                sh '/usr/bin/docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully'
+            echo 'Deployment SUCCESS'
+        }
+        failure {
+            echo 'Deployment FAILED'
         }
     }
 }
