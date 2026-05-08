@@ -17,9 +17,14 @@ pipeline {
         }
 
         stage('Deploy Simulation') {
-            steps {
-                sh 'echo Deployment successful'
-            }
+              steps {
+        sh '''
+        docker build -t smart-hostel-app .
+        docker stop smart-hostel || true
+        docker rm smart-hostel || true
+        docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app
+        '''
+    }
         }
     }
 
