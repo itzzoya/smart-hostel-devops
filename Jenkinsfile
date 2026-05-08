@@ -17,7 +17,7 @@ pipeline {
         }
 
         stage('Deploy Simulation') {
-               steps {
+                  steps {
                 sh 'echo Deployment successful'
             }
         }
