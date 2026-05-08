@@ -11,32 +11,23 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Image') {
             steps {
-                sh '/usr/bin/docker build -t smart-hostel-app .'
+                sh 'docker build -t smart-hostel-app .'
             }
         }
 
-        stage('Stop Old Container') {
+        stage('Stop Container') {
             steps {
-                sh '/usr/bin/docker stop smart-hostel || true'
-                sh '/usr/bin/docker rm smart-hostel || true'
+                sh 'docker stop smart-hostel || true'
+                sh 'docker rm smart-hostel || true'
             }
         }
 
-        stage('Run New Container') {
+        stage('Run Container') {
             steps {
-                sh '/usr/bin/docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app'
+                sh 'docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Deployment SUCCESS'
-        }
-        failure {
-            echo 'Deployment FAILED'
         }
     }
 }
