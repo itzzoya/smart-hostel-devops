@@ -2,30 +2,46 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
+
+        stage('Checkout') {
             steps {
-                git branch: 'main',
-                    credentialsId: 'github-creds',
-                    url: 'https://github.com/itzzoya/smart-hostel-devops.git'
+                git branch: 'main', url: 'https://github.com/itzzoya/smart-hostel-devops.git'
             }
         }
 
-        stage('Build Verification') {
+        stage('Build Docker Image') {
             steps {
-                sh 'echo Build successful'
+                sh '''
+                docker build -t smart-hostel-app .
+                '''
             }
         }
 
-        stage('Deploy Simulation') {
-                  steps {
-                sh 'echo Deployment successful'
+        stage('Stop Old Container') {
+            steps {
+                sh '''
+                docker stop smart-hostel || true
+                docker rm smart-hostel || true
+                '''
             }
         }
+
+        stage('Run New Container') {
+            steps {
+                sh '''
+                docker run -d -p 5000:3000 --name smart-hostel smart-hostel-app
+                '''
+            }
+        }
+
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully'
+            echo "Deployment SUCCESS - Website Updated"
+        }
+        failure {
+            echo "Deployment FAILED - Check logs"
         }
     }
 }
